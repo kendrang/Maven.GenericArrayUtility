@@ -2,6 +2,7 @@ package com.zipcodewilmington.arrayutility;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.stream.Stream;
 
 /**
@@ -15,7 +16,6 @@ public class ArrayUtility<T> {
         this.input = arr;
     }
 
-
     public Integer getNumberOfOccurrences(T valueToEvaluate){
        return Math.toIntExact(Arrays.stream(input)
                .filter(element -> element.equals(valueToEvaluate))
@@ -27,13 +27,6 @@ public class ArrayUtility<T> {
        return Arrays.stream(input)
                 .filter(element -> element != valueToRemove)
                 .toArray(result ->Arrays.copyOf(input,result));
-
-    }
-
-    public T getMostCommonFromMerge(T[] arrayToMerge) {
-
-
-        return null;
     }
 
     public Integer countDuplicatesInMerge(T[] arrayToMerge, T valueToEvaluate) {
@@ -41,5 +34,11 @@ public class ArrayUtility<T> {
                 .toArray(size -> Arrays.copyOf(input, size));
 
        return getNumberOfOccurrences(valueToEvaluate);
+    }
+    public T getMostCommonFromMerge(T[] arrayToMerge) {
+        input = Stream.concat(Arrays.stream(input), Arrays.stream(arrayToMerge))
+                .toArray(size -> Arrays.copyOf(input, size));
+        return Arrays.stream(input).max(Comparator.comparingInt(this :: getNumberOfOccurrences)).get();
+
     }
 }
